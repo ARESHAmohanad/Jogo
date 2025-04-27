@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo de Respostas Rápidas - Incidentes Cibernéticos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0d1117;
+      color: #c9d1d9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      background: #161b22;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,255,150,0.2);
+      width: 90%;
+      max-width: 600px;
+    }
+    button {
+      background-color: #238636;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #timer {
+      font-size: 2rem;
+      margin-top: 20px;
+      color: #ff7b72;
+    }
+    #question {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+    #score, #lives {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Jogo de Respostas Rápidas</h1>
+    <div id="score">Pontos: 0</div>
+    <div id="lives">Vidas: 3</div>
+    <div id="question">Clique em "Começar" para iniciar!</div>
+    <div id="timer">10</div>
+    <button onclick="startGame()">Começar</button>
+    <button onclick="nextQuestion()">Próxima Pergunta</button>
+  </div>
+
+  <script>
+    const questions = [
+      "Alerta de malware no servidor principal. Qual a primeira ação?",
+      "Recebimento de e-mail suspeito com anexo. O que fazer?",
+      "Detecção de tráfego estranho no firewall. Qual ferramenta usar?",
+      "Vazamento de credenciais administrativas. Prioridade imediata?",
+      "Site corporativo foi defaceado. Qual a primeira medida?",
+      "Phishing detectado na rede interna. Ação urgente?",
+      "Servidor apresentando lentidão anormal. Primeira verificação?",
+      "Backup falhou na última execução. O que fazer?",
+      "Suspeita de ransomware na rede. Ação crítica?",
+      "Detectado acesso não autorizado no banco de dados. Primeira ação?"
+    ];
+
+    let timer;
+    let timeLeft = 10;
+    let score = 0;
+    let lives = 3;
+
+    function playAlertSound() {
+      const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
+      audio.play();
+    }
+
+    function startGame() {
+      score = 0;
+      lives = 3;
+      document.getElementById("score").textContent = `Pontos: ${score}`;
+      document.getElementById("lives").textContent = `Vidas: ${lives}`;
+      nextQuestion();
+      startTimer();
+    }
+
+    function nextQuestion() {
+      if (lives > 0) {
+        const randomIndex = Math.floor(Math.random() * questions.length);
+        document.getElementById("question").textContent = questions[randomIndex];
+        resetTimer();
+      } else {
+        document.getElementById("question").textContent = "Game Over! Você perdeu todas as vidas.";
+        clearInterval(timer);
+      }
+    }
+
+    function startTimer() {
+      clearInterval(timer);
+      timeLeft = 10;
+      document.getElementById("timer").textContent = timeLeft;
+      timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          playAlertSound();
+          document.getElementById("question").textContent = "⏰ Tempo esgotado! Próxima pergunta.";
+          loseLife();
+        }
+      }, 1000);
+    }
+
+    function resetTimer() {
+      startTimer();
+    }
+
+    function loseLife() {
+      lives--;
+      document.getElementById("lives").textContent = `Vidas: ${lives}`;
+      if (lives > 0) {
+        setTimeout(nextQuestion, 2000);
+      }
+    }
+
+    function answerCorrectly() {
+      score++;
+      document.getElementById("score").textContent = `Pontos: ${score}`;
+      nextQuestion();
+    }
+
+    function answerIncorrectly() {
+      loseLife();
+    }
+
+    // Simulação de resposta correta/incorreta para testes
+    // Substitua essas funções por interações reais com o jogo
+    function simulateAnswer(isCorrect) {
+      if (isCorrect) {
+        answerCorrectly();
+      } else {
+        answerIncorrectly();
+      }
+    }
+
+    // Para testar, chame simulateAnswer(true) ou simulateAnswer(false)
+  </script>
+</body>
+</html>
