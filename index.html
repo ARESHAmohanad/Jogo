@@ -65,9 +65,8 @@
     <div id="score">Pontos: 0</div>
     <div id="lives">Vidas: 3</div>
     <div id="question">Clique em "Começar" para iniciar!</div>
-    <div id="timer">10</div>
+    <div id="timer">15</div>
     <button onclick="startGame()">Começar</button>
-    <button onclick="nextQuestion()">Próxima Pergunta</button>
     <div id="answers" style="display:none;">
       <button onclick="answer('sim')">Sim</button>
       <button onclick="answer('não')">Não</button>
@@ -89,7 +88,7 @@
     ];
 
     let timer;
-    let timeLeft = 10;
+    let timeLeft = 15;
     let score = 0;
     let lives = 3;
     let currentQuestionIndex = 0;
@@ -116,15 +115,13 @@
         document.getElementById("answers").style.display = "block";
         resetTimer();
       } else {
-        document.getElementById("question").textContent = "Game Over! Você perdeu todas as vidas ou respondeu todas as perguntas.";
-        clearInterval(timer);
-        document.getElementById("answers").style.display = "none";
+        endGame();
       }
     }
 
     function startTimer() {
       clearInterval(timer);
-      timeLeft = 10;
+      timeLeft = 15;
       document.getElementById("timer").textContent = timeLeft;
       timer = setInterval(() => {
         timeLeft--;
@@ -132,7 +129,7 @@
         if (timeLeft <= 0) {
           clearInterval(timer);
           playAlertSound();
-          document.getElementById("question").textContent = "⏰ Tempo esgotado! Próxima pergunta.";
+          document.getElementById("question").textContent = "⏰ Tempo esgotado!";
           loseLife();
         }
       }, 1000);
@@ -148,6 +145,8 @@
       currentQuestionIndex++;
       if (lives > 0) {
         setTimeout(nextQuestion, 2000);
+      } else {
+        endGame();
       }
     }
 
@@ -161,6 +160,11 @@
       }
       currentQuestionIndex++;
       nextQuestion();
+    }
+
+    function endGame() {
+      document.getElementById("question").textContent = `Parabéns! Você completou o jogo com ${score} pontos!`;
+      document.getElementById("answers").style.display = "none";
     }
   </script>
 </body>
