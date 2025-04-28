@@ -49,106 +49,85 @@
       margin-top: 20px;
       font-size: 1.2rem;
     }
-    #answers {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    #answers button {
-      margin: 10px;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Jogo de Respostas Rápidas</h1>
     <div id="score">Pontos: 0</div>
-    <div id="lives">Vidas: 3</div>
+    <div id="lives">Vidas: 5</div>
     <div id="question">Clique em "Começar" para iniciar!</div>
-    <div id="timer">15</div>
+    <div id="timer">20</div>
     <button onclick="startGame()">Começar</button>
-    <div id="answers" style="display:none;">
+    <div id="answer-buttons" style="display:none;">
       <button onclick="answer('sim')">Sim</button>
       <button onclick="answer('não')">Não</button>
     </div>
   </div>
 
   <script>
-
     const questions = [
-  { question: "Fazer backup regularmente é uma boa prática de segurança?", correctAnswer: 'sim' }, // 1 sim
-  { question: "Compartilhar senhas com colegas é seguro?", correctAnswer: 'não' }, // 1 não
-  { question: "Desativar o firewall para acelerar a internet é seguro?", correctAnswer: 'não' }, // 2 não
-  { question: "Ignorar atualizações de sistema é uma prática segura?", correctAnswer: 'não' }, // 3 não
+      { question: "Fazer backup regularmente é uma boa prática de segurança?", correctAnswer: 'sim' },
+      { question: "Compartilhar senhas com colegas é seguro?", correctAnswer: 'não' },
+      { question: "Desativar o firewall para acelerar a internet é seguro?", correctAnswer: 'não' },
+      { question: "Ignorar atualizações de sistema é uma prática segura?", correctAnswer: 'não' },
+      { question: "Ativar autenticação de dois fatores protege melhor suas contas?", correctAnswer: 'sim' },
+      { question: "Treinamento de segurança reduz riscos de phishing?", correctAnswer: 'sim' },
+      { question: "Deixar antivírus desatualizado é seguro?", correctAnswer: 'não' },
+      { question: "Isolar um computador infectado impede a propagação do ataque?", correctAnswer: 'sim' },
+      { question: "Usar pendrives desconhecidos é seguro?", correctAnswer: 'não' },
+      { question: "Utilizar redes Wi-Fi públicas sem proteção é seguro?", correctAnswer: 'não' },
+      { question: "Monitorar o tráfego da rede pode identificar ameaças?", correctAnswer: 'sim' },
+      { question: "Desconsiderar logs de segurança é recomendado?", correctAnswer: 'não' },
+      { question: "Ter senhas fortes reduz riscos de invasão?", correctAnswer: 'sim' },
+      { question: "Deixar portas de rede abertas sem necessidade é seguro?", correctAnswer: 'não' },
+      { question: "Responder rapidamente a incidentes reduz o impacto?", correctAnswer: 'sim' },
+      { question: "Abrir anexos de remetentes desconhecidos é seguro?", correctAnswer: 'não' },
+      { question: "Ter políticas de segurança claras diminui vulnerabilidades?", correctAnswer: 'sim' },
+      { question: "Permitir que qualquer aplicativo acesse dados corporativos é seguro?", correctAnswer: 'não' },
+      { question: "Fazer varreduras regulares contra vírus é necessário?", correctAnswer: 'sim' },
+      { question: "Deixar sistemas operando com falhas conhecidas é seguro?", correctAnswer: 'não' }
+    ];
 
-  { question: "Ativar autenticação de dois fatores protege melhor suas contas?", correctAnswer: 'sim' }, // 1 sim
-  { question: "Treinamento de segurança reduz riscos de phishing?", correctAnswer: 'sim' }, // 2 sim
-  { question: "Deixar antivírus desatualizado é seguro?", correctAnswer: 'não' }, // 1 não
-
-  { question: "Isolar um computador infectado impede a propagação do ataque?", correctAnswer: 'sim' }, // 1 sim
-  { question: "Usar pendrives desconhecidos é seguro?", correctAnswer: 'não' }, // 1 não
-  { question: "Utilizar redes Wi-Fi públicas sem proteção é seguro?", correctAnswer: 'não' }, // 2 não
-
-  { question: "Monitorar o tráfego da rede pode identificar ameaças?", correctAnswer: 'sim' }, // 1 sim
-  { question: "Desconsiderar logs de segurança é recomendado?", correctAnswer: 'não' }, // 1 não
-
-  { question: "Ter senhas fortes reduz riscos de invasão?", correctAnswer: 'sim' }, // 1 sim
-  { question: "Deixar portas de rede abertas sem necessidade é seguro?", correctAnswer: 'não' }, // 1 não
-  { question: "Responder rapidamente a incidentes reduz o impacto?", correctAnswer: 'sim' }, // 1 sim
-
-  { question: "Abrir anexos de remetentes desconhecidos é seguro?", correctAnswer: 'não' }, // 1 não
-  { question: "Ter políticas de segurança claras diminui vulnerabilidades?", correctAnswer: 'sim' }, // 1 sim
-  { question: "Permitir que qualquer aplicativo acesse dados corporativos é seguro?", correctAnswer: 'não' }, // 1 não
-  { question: "Fazer varreduras regulares contra vírus é necessário?", correctAnswer: 'sim' }, // 1 sim
-  { question: "Deixar sistemas operando com falhas conhecidas é seguro?", correctAnswer: 'não' } // 1 não
-];
-
-
-
-    let timer;
-    let timeLeft = 15;
-    let score = 0;
-    let lives = 3;
     let currentQuestionIndex = 0;
-
-    function playAlertSound() {
-      const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
-      audio.play();
-    }
+    let timer;
+    let timeLeft = 20;
+    let score = 0;
+    let lives = 5;
 
     function startGame() {
       score = 0;
-      lives = 3;
+      lives = 5;
       currentQuestionIndex = 0;
       document.getElementById("score").textContent = `Pontos: ${score}`;
       document.getElementById("lives").textContent = `Vidas: ${lives}`;
+      document.getElementById("answer-buttons").style.display = "block";
       nextQuestion();
-      startTimer();
     }
 
     function nextQuestion() {
-      if (lives > 0 && currentQuestionIndex < questions.length) {
-        const question = questions[currentQuestionIndex];
-        document.getElementById("question").textContent = question.question;
-        document.getElementById("answers").style.display = "block";
-        resetTimer();
-      } else {
-        endGame();
+      if (currentQuestionIndex >= questions.length) {
+        document.getElementById("question").textContent = "🎉 Parabéns, você completou o jogo!";
+        document.getElementById("answer-buttons").style.display = "none";
+        clearInterval(timer);
+        return;
       }
+      document.getElementById("question").textContent = questions[currentQuestionIndex].question;
+      resetTimer();
     }
 
     function startTimer() {
       clearInterval(timer);
-      timeLeft = 15;
+      timeLeft = 20;
       document.getElementById("timer").textContent = timeLeft;
       timer = setInterval(() => {
         timeLeft--;
         document.getElementById("timer").textContent = timeLeft;
         if (timeLeft <= 0) {
           clearInterval(timer);
-          playAlertSound();
-          document.getElementById("question").textContent = "⏰ Tempo esgotado!";
           loseLife();
+          currentQuestionIndex++;
+          nextQuestion();
         }
       }, 1000);
     }
@@ -157,20 +136,8 @@
       startTimer();
     }
 
-    function loseLife() {
-      lives--;
-      document.getElementById("lives").textContent = `Vidas: ${lives}`;
-      currentQuestionIndex++;
-      if (lives > 0) {
-        setTimeout(nextQuestion, 2000);
-      } else {
-        endGame();
-      }
-    }
-
-    function answer(answer) {
-      const correctAnswer = questions[currentQuestionIndex].correctAnswer;
-      if (answer === correctAnswer) {
+    function answer(userAnswer) {
+      if (userAnswer === questions[currentQuestionIndex].correctAnswer) {
         score++;
         document.getElementById("score").textContent = `Pontos: ${score}`;
       } else {
@@ -180,9 +147,14 @@
       nextQuestion();
     }
 
-    function endGame() {
-      document.getElementById("question").textContent = `Parabéns! Você completou o jogo com ${score} pontos!`;
-      document.getElementById("answers").style.display = "none";
+    function loseLife() {
+      lives--;
+      document.getElementById("lives").textContent = `Vidas: ${lives}`;
+      if (lives <= 0) {
+        document.getElementById("question").textContent = "☠️ Game Over! Você perdeu todas as vidas.";
+        document.getElementById("answer-buttons").style.display = "none";
+        clearInterval(timer);
+      }
     }
   </script>
 </body>
