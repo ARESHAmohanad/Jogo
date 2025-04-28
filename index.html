@@ -74,18 +74,36 @@
   </div>
 
   <script>
+
     const questions = [
-      { question: "Alerta de malware no servidor principal. A primeira ação deve ser a análise de logs?", correctAnswer: 'sim' },
-      { question: "Recebimento de e-mail suspeito com anexo. É seguro abrir o anexo?", correctAnswer: 'não' },
-      { question: "Detecção de tráfego estranho no firewall. A ferramenta recomendada para análise é o Wireshark?", correctAnswer: 'sim' },
-      { question: "Vazamento de credenciais administrativas. Deve-se realizar o reset imediato das senhas?", correctAnswer: 'sim' },
-      { question: "Site corporativo foi defaceado. A primeira medida é verificar os logs de acesso?", correctAnswer: 'sim' },
-      { question: "Phishing detectado na rede interna. A ação urgente é bloquear o IP de origem?", correctAnswer: 'sim' },
-      { question: "Servidor apresentando lentidão anormal. A primeira verificação é checar a utilização de CPU?", correctAnswer: 'sim' },
-      { question: "Backup falhou na última execução. Deve-se tentar restaurar o backup imediatamente?", correctAnswer: 'sim' },
-      { question: "Suspeita de ransomware na rede. A primeira medida deve ser isolar as máquinas afetadas?", correctAnswer: 'sim' },
-      { question: "Detectado acesso não autorizado no banco de dados. A primeira ação deve ser revogar as credenciais comprometidas?", correctAnswer: 'sim' }
-    ];
+  { question: "Fazer backup regularmente é uma boa prática de segurança?", correctAnswer: 'sim' }, // 1 sim
+  { question: "Compartilhar senhas com colegas é seguro?", correctAnswer: 'não' }, // 1 não
+  { question: "Desativar o firewall para acelerar a internet é seguro?", correctAnswer: 'não' }, // 2 não
+  { question: "Ignorar atualizações de sistema é uma prática segura?", correctAnswer: 'não' }, // 3 não
+
+  { question: "Ativar autenticação de dois fatores protege melhor suas contas?", correctAnswer: 'sim' }, // 1 sim
+  { question: "Treinamento de segurança reduz riscos de phishing?", correctAnswer: 'sim' }, // 2 sim
+  { question: "Deixar antivírus desatualizado é seguro?", correctAnswer: 'não' }, // 1 não
+
+  { question: "Isolar um computador infectado impede a propagação do ataque?", correctAnswer: 'sim' }, // 1 sim
+  { question: "Usar pendrives desconhecidos é seguro?", correctAnswer: 'não' }, // 1 não
+  { question: "Utilizar redes Wi-Fi públicas sem proteção é seguro?", correctAnswer: 'não' }, // 2 não
+
+  { question: "Monitorar o tráfego da rede pode identificar ameaças?", correctAnswer: 'sim' }, // 1 sim
+  { question: "Desconsiderar logs de segurança é recomendado?", correctAnswer: 'não' }, // 1 não
+
+  { question: "Ter senhas fortes reduz riscos de invasão?", correctAnswer: 'sim' }, // 1 sim
+  { question: "Deixar portas de rede abertas sem necessidade é seguro?", correctAnswer: 'não' }, // 1 não
+  { question: "Responder rapidamente a incidentes reduz o impacto?", correctAnswer: 'sim' }, // 1 sim
+
+  { question: "Abrir anexos de remetentes desconhecidos é seguro?", correctAnswer: 'não' }, // 1 não
+  { question: "Ter políticas de segurança claras diminui vulnerabilidades?", correctAnswer: 'sim' }, // 1 sim
+  { question: "Permitir que qualquer aplicativo acesse dados corporativos é seguro?", correctAnswer: 'não' }, // 1 não
+  { question: "Fazer varreduras regulares contra vírus é necessário?", correctAnswer: 'sim' }, // 1 sim
+  { question: "Deixar sistemas operando com falhas conhecidas é seguro?", correctAnswer: 'não' } // 1 não
+];
+
+
 
     let timer;
     let timeLeft = 15;
