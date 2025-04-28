@@ -60,26 +60,31 @@
     <div id="timer">10</div>
     <button onclick="startGame()">Começar</button>
     <button onclick="nextQuestion()">Próxima Pergunta</button>
+    <div id="answers" style="display:none;">
+      <button onclick="answer('sim')">Sim</button>
+      <button onclick="answer('não')">Não</button>
+    </div>
   </div>
 
   <script>
     const questions = [
-      "Alerta de malware no servidor principal. Qual a primeira ação?",
-      "Recebimento de e-mail suspeito com anexo. O que fazer?",
-      "Detecção de tráfego estranho no firewall. Qual ferramenta usar?",
-      "Vazamento de credenciais administrativas. Prioridade imediata?",
-      "Site corporativo foi defaceado. Qual a primeira medida?",
-      "Phishing detectado na rede interna. Ação urgente?",
-      "Servidor apresentando lentidão anormal. Primeira verificação?",
-      "Backup falhou na última execução. O que fazer?",
-      "Suspeita de ransomware na rede. Ação crítica?",
-      "Detectado acesso não autorizado no banco de dados. Primeira ação?"
+      { question: "Alerta de malware no servidor principal. A primeira ação deve ser a análise de logs?", correctAnswer: 'sim' },
+      { question: "Recebimento de e-mail suspeito com anexo. É seguro abrir o anexo?", correctAnswer: 'não' },
+      { question: "Detecção de tráfego estranho no firewall. A ferramenta recomendada para análise é o Wireshark?", correctAnswer: 'sim' },
+      { question: "Vazamento de credenciais administrativas. Deve-se realizar o reset imediato das senhas?", correctAnswer: 'sim' },
+      { question: "Site corporativo foi defaceado. A primeira medida é verificar os logs de acesso?", correctAnswer: 'sim' },
+      { question: "Phishing detectado na rede interna. A ação urgente é bloquear o IP de origem?", correctAnswer: 'sim' },
+      { question: "Servidor apresentando lentidão anormal. A primeira verificação é checar a utilização de CPU?", correctAnswer: 'sim' },
+      { question: "Backup falhou na última execução. Deve-se tentar restaurar o backup imediatamente?", correctAnswer: 'sim' },
+      { question: "Suspeita de ransomware na rede. A primeira medida deve ser isolar as máquinas afetadas?", correctAnswer: 'sim' },
+      { question: "Detectado acesso não autorizado no banco de dados. A primeira ação deve ser revogar as credenciais comprometidas?", correctAnswer: 'sim' }
     ];
 
     let timer;
     let timeLeft = 10;
     let score = 0;
     let lives = 3;
+    let currentQuestionIndex = 0;
 
     function playAlertSound() {
       const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
@@ -89,6 +94,7 @@
     function startGame() {
       score = 0;
       lives = 3;
+      currentQuestionIndex = 0;
       document.getElementById("score").textContent = `Pontos: ${score}`;
       document.getElementById("lives").textContent = `Vidas: ${lives}`;
       nextQuestion();
@@ -96,13 +102,15 @@
     }
 
     function nextQuestion() {
-      if (lives > 0) {
-        const randomIndex = Math.floor(Math.random() * questions.length);
-        document.getElementById("question").textContent = questions[randomIndex];
+      if (lives > 0 && currentQuestionIndex < questions.length) {
+        const question = questions[currentQuestionIndex];
+        document.getElementById("question").textContent = question.question;
+        document.getElementById("answers").style.display = "block";
         resetTimer();
       } else {
-        document.getElementById("question").textContent = "Game Over! Você perdeu todas as vidas.";
+        document.getElementById("question").textContent = "Game Over! Você perdeu todas as vidas ou respondeu todas as perguntas.";
         clearInterval(timer);
+        document.getElementById("answers").style.display = "none";
       }
     }
 
@@ -129,32 +137,23 @@
     function loseLife() {
       lives--;
       document.getElementById("lives").textContent = `Vidas: ${lives}`;
+      currentQuestionIndex++;
       if (lives > 0) {
         setTimeout(nextQuestion, 2000);
       }
     }
 
-    function answerCorrectly() {
-      score++;
-      document.getElementById("score").textContent = `Pontos: ${score}`;
+    function answer(answer) {
+      const correctAnswer = questions[currentQuestionIndex].correctAnswer;
+      if (answer === correctAnswer) {
+        score++;
+        document.getElementById("score").textContent = `Pontos: ${score}`;
+      } else {
+        loseLife();
+      }
+      currentQuestionIndex++;
       nextQuestion();
     }
-
-    function answerIncorrectly() {
-      loseLife();
-    }
-
-    // Simulação de resposta correta/incorreta para testes
-    // Substitua essas funções por interações reais com o jogo
-    function simulateAnswer(isCorrect) {
-      if (isCorrect) {
-        answerCorrectly();
-      } else {
-        answerIncorrectly();
-      }
-    }
-
-    // Para testar, chame simulateAnswer(true) ou simulateAnswer(false)
   </script>
 </body>
 </html>
